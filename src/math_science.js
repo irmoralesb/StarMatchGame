@@ -1,7 +1,7 @@
 //import React from 'react';
 
 // Math science
-const utils = {
+const Utils = {
     // Sum an array
     sum: arr => arr.reduce((acc, curr) => acc + curr, 0),
   
@@ -19,15 +19,15 @@ const utils = {
       for (let i = 0; i < arr.length; i++) {
         for (let j = 0, len = sets.length; j < len; j++) {
           const candidateSet = sets[j].concat(arr[i]);
-          const candidateSum = utils.sum(candidateSet);
+          const candidateSum = Utils.sum(candidateSet);
           if (candidateSum <= max) {
             sets.push(candidateSet);
             sums.push(candidateSum);
           }
         }
       }
-      return sums[utils.random(0, sums.length - 1)];
+      return sums[Utils.random(0, sums.length - 1)];
     },
   };
 
-  export default utils;
+  export default Utils;

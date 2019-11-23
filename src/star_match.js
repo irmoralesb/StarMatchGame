@@ -1,6 +1,10 @@
 import React from 'react'
-
+import Utils from './math_science';
+import NumberButton from './number_button'
+import StarDisplay from './star_display';
 const StarMatch = () => {
+  const [stars_max_number, set_stars_max_number] = React.useState(Utils.random(1,9));
+  const numbers_max_number = 9;
     return (
       <div className="game">
         <div className="help">
@@ -8,26 +12,12 @@ const StarMatch = () => {
         </div>
         <div className="body">
           <div className="left">
-            <div className="star" />
-            <div className="star" />
-            <div className="star" />
-            <div className="star" />
-            <div className="star" />
-            <div className="star" />
-            <div className="star" />
-            <div className="star" />
-            <div className="star" />
+            <StarDisplay count={stars_max_number} />
           </div>
           <div className="right">
-            <button className="number">1</button>
-            <button className="number">2</button>
-            <button className="number">3</button>
-            <button className="number">4</button>
-            <button className="number">5</button>
-            <button className="number">6</button>
-            <button className="number">7</button>
-            <button className="number">8</button>
-            <button className="number">9</button>
+            { Utils.range(1,numbers_max_number).map( numberId =>
+              <NumberButton key={numberId} numberId={numberId}/>
+            )}
           </div>
         </div>
         <div className="timer">Time Remaining: 10</div>
