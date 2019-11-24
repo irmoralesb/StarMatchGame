@@ -2,6 +2,8 @@ import React from 'react'
 import Utils from './math_science';
 import NumberButton from './number_button'
 import StarDisplay from './star_display';
+import PlayAgain from './play_again';
+
 const StarMatch = () => {
   const [starsMaxNumber, setStarsMaxNumber] = React.useState(Utils.random(1,9));
   const numbersMaxNumber = 9;
@@ -9,7 +11,14 @@ const StarMatch = () => {
   const [candidateNums, setCandidateNums] = React.useState([]);
 
   const candidatesAreWrong = Utils.sum(candidateNums) > starsMaxNumber;
-
+  const gameIsDone = availableNums.length === 0 ? true : false; 
+  
+  const resetGame = () => {
+    setStarsMaxNumber(Utils.random(1,9));
+    setAvailableNums(Utils.range(1,9));
+    setCandidateNums([]);
+  }
+  
   const numberStatus = (number) => {
     if (!availableNums.includes(number)) {
     	return 'used';
@@ -51,7 +60,11 @@ const StarMatch = () => {
         </div>
         <div className="body">
           <div className="left">
-            <StarDisplay count={starsMaxNumber} />
+            {gameIsDone ? (
+              <PlayAgain onClick={resetGame} />
+            ) : (
+              <StarDisplay count={starsMaxNumber} />
+            )}
           </div>
           <div className="right">
             { Utils.range(1,numbersMaxNumber).map( numberId =>
