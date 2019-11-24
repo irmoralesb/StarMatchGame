@@ -9,9 +9,22 @@ const StarMatch = () => {
   const numbersMaxNumber = 9;
   const [availableNums, setAvailableNums] = React.useState(Utils.range(1,9));
   const [candidateNums, setCandidateNums] = React.useState([]);
+  const [secondsLeft, setSecondsLeft] = React.useState(10);
+
+  React.useEffect(() =>{
+    if (secondsLeft > 0 && availableNums.length > 0){
+      const timerId = setTimeout(() => {
+        setSecondsLeft(secondsLeft - 1);
+      }, 1000);
+      return () => clearTimeout(timerId);
+    }
+  })
+
 
   const candidatesAreWrong = Utils.sum(candidateNums) > starsMaxNumber;
-  const gameIsDone = availableNums.length === 0 ? true : false; 
+  const gameStatus = availableNums.length === 0
+  ? 'won'
+  :secondsLeft === 0 ? 'lost' : 'active';
   
   const resetGame = () => {
     setStarsMaxNumber(Utils.random(1,9));
@@ -32,7 +45,7 @@ const StarMatch = () => {
   }
 
   const onNumberClick = (numberId, currentStatus) => {
-    if (currentStatus === 'used'){
+    if (gameStatus !== 'active' || currentStatus === 'used'){
       return;
     }
 
@@ -60,8 +73,8 @@ const StarMatch = () => {
         </div>
         <div className="body">
           <div className="left">
-            {gameIsDone ? (
-              <PlayAgain onClick={resetGame} />
+            {gameStatus !== 'active' ? (
+              <PlayAgain onClick={resetGame} gameStatus={gameStatus}/>
             ) : (
               <StarDisplay count={starsMaxNumber} />
             )}
@@ -77,7 +90,7 @@ const StarMatch = () => {
             )}
           </div>
         </div>
-        <div className="timer">Time Remaining: 10</div>
+            <div className="timer">Time Remaining: {secondsLeft}</div>
       </div>
     );
   };
