@@ -1,5 +1,4 @@
 import React from 'react'
-import colors from './color_constants'
 
 const PlayAgain = (props) => (
     <div className="game-done">

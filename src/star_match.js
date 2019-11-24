@@ -3,23 +3,17 @@ import Utils from './math_science';
 import NumberButton from './number_button'
 import StarDisplay from './star_display';
 import PlayAgain from './play_again';
+import useGameState from './game_state';
 
 const StarMatch = (props) => {
-  const [starsMaxNumber, setStarsMaxNumber] = React.useState(Utils.random(1,9));
   const numbersMaxNumber = 9;
-  const [availableNums, setAvailableNums] = React.useState(Utils.range(1,9));
-  const [candidateNums, setCandidateNums] = React.useState([]);
-  const [secondsLeft, setSecondsLeft] = React.useState(10);
-
-  React.useEffect(() =>{
-    if (secondsLeft > 0 && availableNums.length > 0){
-      const timerId = setTimeout(() => {
-        setSecondsLeft(secondsLeft - 1);
-      }, 1000);
-      return () => clearTimeout(timerId);
-    }
-  })
-
+  const {
+    starsMaxNumber,
+    availableNums,
+    candidateNums,
+    secondsLeft,
+    setGameState
+  } = useGameState();
 
   const candidatesAreWrong = Utils.sum(candidateNums) > starsMaxNumber;
   const gameStatus = availableNums.length === 0
@@ -43,21 +37,12 @@ const StarMatch = (props) => {
       return;
     }
 
-    const newCandidateNums =
+    const newCandidateNums = 
       currentStatus === 'available'
       ? candidateNums.concat(numberId)
       : candidateNums.filter(cn => cn !== numberId);
 
-    if(Utils.sum(newCandidateNums) !== starsMaxNumber){
-      setCandidateNums(newCandidateNums);
-    }else{
-      const newAvailableNums = availableNums.filter(
-        n => !newCandidateNums.includes(n)
-      );
-      setStarsMaxNumber(Utils.randomSumIn(newAvailableNums,9));
-      setAvailableNums(newAvailableNums);
-      setCandidateNums([]);
-    }
+    setGameState(newCandidateNums);
   }
 
     return (
