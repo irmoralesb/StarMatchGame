@@ -4,7 +4,7 @@ const NumberButton = (props) =>{
     
     const [numberId] = React.useState(props.numberId);
 
-    let clickHandler = () => console.log('Num', props.numberId);
+    let clickHandler = () => props.onClick(props.numberId, props.status);
 
     return (
         <button 
